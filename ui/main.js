@@ -1,5 +1,35 @@
 console.log('Loaded!');
 
+//Display comments for articles
+var submit = document.getElementById('submit_btn');
+
+submit.onclick = function () {
+	var request = new XMLHttpRequest();
+
+	request.onreadystatechange = function () {
+		if(request.readyState === XMLHttpRequest.DONE) {
+			if(request.status === 200) {
+				var comments = request.responseText;
+				comments = JSON.parse(comments);
+				var list = '';
+				for(var i=0; i< comments.length; i++) {
+					list += '<li>' + comments[i] + '</li><br>';
+				}
+				var ul = document.getElementById('commentlist');
+				ul.innerHTML = list;
+			}
+		}
+	};
+
+	var articleId = document.getElementById('article_id').innerHTML;
+	var id = parseInt(articleId);
+	var commentInput = document.getElementById('comment');
+	var comment = commentInput.value;
+	//request.open('GET','http://localhost:8080/submit-comment/' + id + '?comment=' + comment,true);
+	request.open('GET','http://sivaprakashcb.imad.hasura-app.io/submit-comment/' + id + '?comment=' + comment,true);
+	request.send(null);
+};
+
 /*//Test button counter
 var button = document.getElementById('counter');
 var counter = 0;
@@ -10,7 +40,7 @@ button.onclick = function () {
 	span.innerHTML = counter.toString();
 };*/
 
-//Click Counter
+/*//Click Counter
 var button = document.getElementById('counter');
 
 button.onclick = function () {
@@ -29,8 +59,9 @@ button.onclick = function () {
 	request.open('GET','http://localhost:8080/counter',true);
 	request.send(null);
 };
+*/
 
-//Submit name
+/*//Submit name
 var submit = document.getElementById('submit_btn');
 
 submit.onclick = function () {
@@ -56,3 +87,4 @@ submit.onclick = function () {
 	request.open('GET','http://localhost:8080/submit-name?name=' + name,true);
 	request.send(null);
 };
+*/
